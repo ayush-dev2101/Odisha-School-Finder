@@ -81,8 +81,8 @@ const Footer = () => {
               </div>
               <div className="flex items-center space-x-3">
                 <Phone size={16} className="text-primary" />
-                <a href="tel:+919876543210" className="text-muted-foreground hover:text-primary transition-colors text-sm">
-                  +91 98765 43210
+                <a href="tel:+916370355930" className="text-muted-foreground hover:text-primary transition-colors text-sm">
+                  +91 63703-55930
                 </a>
               </div>
               <div className="flex items-center space-x-3">
@@ -102,12 +102,12 @@ const Footer = () => {
               © 2024 School Finder Odisha. All rights reserved.
             </p>
             <div className="flex space-x-6">
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors text-sm">
+              <Link to="/privacy" className="text-muted-foreground hover:text-primary transition-colors text-sm">
                 Privacy Policy
-              </a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors text-sm">
+              </Link>
+              <Link to="/terms" className="text-muted-foreground hover:text-primary transition-colors text-sm">
                 Terms of Service
-              </a>
+              </Link>
               <a href="#" className="text-muted-foreground hover:text-primary transition-colors text-sm">
                 Cookie Policy
               </a>

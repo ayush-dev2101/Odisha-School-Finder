@@ -96,7 +96,7 @@ const Contact = () => {
     {
       icon: Phone,
       title: 'Call Us',
-      details: '+91 98765 43210',
+      details: '+91 63703 55930',
       description: 'Speak with our team'
     },
     {
@@ -210,9 +210,9 @@ const Contact = () => {
                       )}
                     </Button>
 
-                    <p className="text-xs text-muted-foreground text-center">
-                      By submitting this form, you agree to our Privacy Policy and Terms of Service.
-                    </p>
+                                                <p className="text-xs text-muted-foreground text-center">
+                By submitting this form, you agree to our Privacy Policy and Terms of Service.
+              </p>
                   </form>
                 )}
               </CardContent>
@@ -284,7 +284,7 @@ const Contact = () => {
                 </p>
                 <Button className="edu-button-primary">
                   <Phone className="h-4 w-4 mr-2" />
-                  Call Now: +91 98765 43210
+                  Call Now: +91 63703 55930
                 </Button>
               </CardContent>
             </Card>

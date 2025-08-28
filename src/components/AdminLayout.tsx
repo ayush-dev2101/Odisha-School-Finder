@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
-import { LogOut, School, Users, Settings, BarChart3, Home } from "lucide-react";
+import { LogOut, School, Users, Settings, BarChart3, Home, MessageSquare } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
 interface AdminLayoutProps {
@@ -15,6 +15,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   const navigation = [
     { name: "Dashboard", href: "/admin", icon: School },
     { name: "Schools", href: "/admin/schools", icon: School },
+    { name: "Reviews", href: "/admin/reviews", icon: MessageSquare },
     { name: "Users", href: "/admin/users", icon: Users },
     { name: "Analytics", href: "/admin/analytics", icon: BarChart3 },
     { name: "Settings", href: "/admin/settings", icon: Settings },

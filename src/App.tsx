@@ -13,9 +13,12 @@ import Auth from "./pages/Auth";
 import AdminRoute from "./components/AdminRoute";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminSchools from "./pages/admin/AdminSchools";
+import AdminReviews from "./pages/admin/AdminReviews";
 import AdminUsers from "./pages/admin/AdminUsers";
 import AdminAnalytics from "./pages/admin/AdminAnalytics";
 import AdminSettings from "./pages/admin/AdminSettings";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsConditions from "./pages/TermsConditions";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -34,6 +37,8 @@ const App = () => (
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/privacy" element={<PrivacyPolicy />} />
+            <Route path="/terms" element={<TermsConditions />} />
             <Route 
               path="/admin" 
               element={
@@ -47,6 +52,14 @@ const App = () => (
               element={
                 <AdminRoute>
                   <AdminSchools />
+                </AdminRoute>
+              } 
+            />
+            <Route 
+              path="/admin/reviews" 
+              element={
+                <AdminRoute>
+                  <AdminReviews />
                 </AdminRoute>
               } 
             />

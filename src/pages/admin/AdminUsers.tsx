@@ -31,7 +31,7 @@ const AdminUsers = () => {
     try {
       setLoading(true);
       
-      // Get profiles with user roles
+      // Get all profiles
       const { data: profiles, error: profilesError } = await supabase
         .from("profiles")
         .select(`
@@ -40,13 +40,27 @@ const AdminUsers = () => {
           display_name,
           phone,
           created_at,
-          last_login_at,
-          user_roles (
-            role
-          )
-        `);
+          last_login_at
+        `)
+        .order("created_at", { ascending: false });
 
       if (profilesError) throw profilesError;
+
+      // Get all user roles
+      const { data: userRoles, error: rolesError } = await supabase
+        .from("user_roles")
+        .select("user_id, role");
+
+      if (rolesError) throw rolesError;
+
+      // Create a map of user roles
+      const roleMap = new Map();
+      userRoles?.forEach(ur => {
+        if (!roleMap.has(ur.user_id)) {
+          roleMap.set(ur.user_id, []);
+        }
+        roleMap.get(ur.user_id).push(ur.role);
+      });
 
       const formattedUsers = profiles?.map(profile => ({
         id: profile.user_id,
@@ -55,7 +69,7 @@ const AdminUsers = () => {
         last_login_at: profile.last_login_at,
         display_name: profile.display_name,
         phone: profile.phone,
-        role: (profile.user_roles as any)?.[0]?.role || 'user'
+        role: roleMap.get(profile.user_id)?.[0] || 'user'
       })) || [];
 
       setUsers(formattedUsers);

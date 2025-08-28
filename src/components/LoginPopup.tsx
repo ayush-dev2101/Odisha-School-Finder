@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -169,10 +170,35 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose }) => {
               </div>
             </div>
 
-            <div className="bg-accent/30 p-3 rounded-lg border border-border">
-              <p className="text-xs text-muted-foreground">
-                Don't have an account? <span className="font-medium">Click "Sign In" in the header to access the full registration page.</span>
-              </p>
+            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-lg border border-blue-200">
+              <div className="flex items-start space-x-3">
+                <div className="flex-shrink-0">
+                  <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                    <span className="text-blue-600 text-sm font-semibold">?</span>
+                  </div>
+                </div>
+                <div className="flex-1">
+                  <h4 className="text-sm font-semibold text-blue-900 mb-1">
+                    Searching for a school for the first time?
+                  </h4>
+                  <p className="text-xs text-blue-700 mb-3">
+                    Create an account to save your favorite schools, write reviews, and get personalized recommendations.
+                  </p>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    className="w-full border-blue-300 text-blue-700 hover:bg-blue-50"
+                    onClick={() => {
+                      onClose();
+                      // Navigate to auth page with signup tab
+                      window.location.href = '/auth?tab=signup';
+                    }}
+                  >
+                    Create Free Account
+                  </Button>
+                </div>
+              </div>
             </div>
           </CardContent>
 
@@ -201,9 +227,17 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose }) => {
               </button>
             </p>
             
-            <p className="text-xs text-center text-muted-foreground">
-              By logging in, you agree to our Terms of Service and Privacy Policy.
-            </p>
+                                                                  <p className="text-xs text-center text-muted-foreground">
+                    By logging in, you agree to our{' '}
+                    <Link to="/terms" className="text-primary hover:underline">
+                      Terms of Service
+                    </Link>{' '}
+                    and{' '}
+                    <Link to="/privacy" className="text-primary hover:underline">
+                      Privacy Policy
+                    </Link>
+                    .
+                  </p>
           </CardFooter>
         </form>
       </Card>

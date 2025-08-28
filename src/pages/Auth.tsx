@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -19,6 +19,15 @@ const Auth = () => {
   const { signIn, signUp, user } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  // Set active tab based on URL parameter
+  useEffect(() => {
+    const tab = searchParams.get('tab');
+    if (tab === 'signup') {
+      setActiveTab('signup');
+    }
+  }, [searchParams]);
 
   // Redirect if already authenticated
   useEffect(() => {
@@ -257,7 +266,15 @@ const Auth = () => {
 
                   <div className="bg-accent/30 p-3 rounded-lg border border-border">
                     <p className="text-xs text-muted-foreground">
-                      By creating an account, you agree to our Terms of Service and Privacy Policy.
+                      By creating an account, you agree to our{' '}
+                      <Link to="/terms" className="text-primary hover:underline">
+                        Terms of Service
+                      </Link>{' '}
+                      and{' '}
+                      <Link to="/privacy" className="text-primary hover:underline">
+                        Privacy Policy
+                      </Link>
+                      .
                     </p>
                   </div>
 

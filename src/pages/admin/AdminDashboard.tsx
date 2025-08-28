@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart3, Users, School, Star, TrendingUp, Activity } from "lucide-react";
+import { BarChart3, Users, School, Star, TrendingUp, Activity, MessageSquare } from "lucide-react";
 
 interface DashboardStats {
   totalSchools: number;
@@ -168,18 +168,26 @@ const AdminDashboard = () => {
                 <div className="text-sm text-gray-600">View user accounts</div>
               </a>
               <a 
-                href="/admin/analytics" 
+                href="/admin/reviews" 
                 className="p-4 bg-purple-50 rounded-lg border border-purple-200 hover:bg-purple-100 transition-colors text-center"
               >
-                <BarChart3 className="h-8 w-8 text-purple-600 mx-auto mb-2" />
+                <MessageSquare className="h-8 w-8 text-purple-600 mx-auto mb-2" />
+                <div className="font-medium text-gray-900">Manage Reviews</div>
+                <div className="text-sm text-gray-600">School ratings & feedback</div>
+              </a>
+              <a 
+                href="/admin/analytics" 
+                className="p-4 bg-orange-50 rounded-lg border border-orange-200 hover:bg-orange-100 transition-colors text-center"
+              >
+                <BarChart3 className="h-8 w-8 text-orange-600 mx-auto mb-2" />
                 <div className="font-medium text-gray-900">View Analytics</div>
                 <div className="text-sm text-gray-600">Platform insights</div>
               </a>
               <a 
                 href="/admin/settings" 
-                className="p-4 bg-orange-50 rounded-lg border border-orange-200 hover:bg-orange-100 transition-colors text-center"
+                className="p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors text-center"
               >
-                <Activity className="h-8 w-8 text-orange-600 mx-auto mb-2" />
+                <Activity className="h-8 w-8 text-gray-600 mx-auto mb-2" />
                 <div className="font-medium text-gray-900">Settings</div>
                 <div className="text-sm text-gray-600">System configuration</div>
               </a>
