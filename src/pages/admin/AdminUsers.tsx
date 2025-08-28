@@ -4,8 +4,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { Users, Shield, Mail, Calendar, Search } from "lucide-react";
+import { Users, Shield, Mail, Calendar, Search, Eye, Edit, Save, X } from "lucide-react";
 
 interface User {
   id: string;
@@ -14,7 +17,7 @@ interface User {
   last_login_at?: string;
   display_name?: string;
   phone?: string;
-  role?: string;
+  role?: "admin" | "moderator" | "user";
 }
 
 const AdminUsers = () => {
@@ -22,6 +25,10 @@ const AdminUsers = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [editingRole, setEditingRole] = useState<"admin" | "moderator" | "user">("user");
 
   useEffect(() => {
     fetchUsers();
@@ -109,6 +116,53 @@ const AdminUsers = () => {
       hour: '2-digit',
       minute: '2-digit'
     });
+  };
+
+  const handleViewDetails = (user: User) => {
+    setSelectedUser(user);
+    setIsViewDialogOpen(true);
+  };
+
+  const handleEditRole = (user: User) => {
+    setSelectedUser(user);
+    setEditingRole(user.role || 'user');
+    setIsEditDialogOpen(true);
+  };
+
+  const handleSaveRole = async () => {
+    if (!selectedUser) return;
+
+    try {
+      // Update user role
+      const { error } = await supabase
+        .from('user_roles')
+        .update({ role: editingRole })
+        .eq('user_id', selectedUser.id);
+
+      if (error) throw error;
+
+      // Update local state
+      setUsers(users.map(user => 
+        user.id === selectedUser.id 
+          ? { ...user, role: editingRole as "admin" | "moderator" | "user" }
+          : user
+      ));
+
+      toast({
+        title: "Success",
+        description: `User role updated to ${editingRole}`,
+      });
+
+      setIsEditDialogOpen(false);
+      setSelectedUser(null);
+    } catch (error) {
+      console.error('Error updating user role:', error);
+      toast({
+        title: "Error",
+        description: "Failed to update user role",
+        variant: "destructive",
+      });
+    }
   };
 
   if (loading) {
@@ -249,10 +303,22 @@ const AdminUsers = () => {
                   </div>
                 </div>
                 <div className="flex space-x-2">
-                  <Button variant="outline" size="sm" className="border-gray-300">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="border-gray-300"
+                    onClick={() => handleViewDetails(user)}
+                  >
+                    <Eye className="h-4 w-4 mr-1" />
                     View Details
                   </Button>
-                  <Button variant="outline" size="sm" className="border-blue-300 text-blue-600">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="border-blue-300 text-blue-600"
+                    onClick={() => handleEditRole(user)}
+                  >
+                    <Edit className="h-4 w-4 mr-1" />
                     Edit Role
                   </Button>
                 </div>
@@ -266,6 +332,112 @@ const AdminUsers = () => {
           </div>
         </CardContent>
       </Card>
+
+      {/* View User Details Dialog */}
+      <Dialog open={isViewDialogOpen} onOpenChange={setIsViewDialogOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>User Details</DialogTitle>
+            <DialogDescription>
+              Detailed information about the selected user
+            </DialogDescription>
+          </DialogHeader>
+          {selectedUser && (
+            <div className="space-y-4">
+              <div className="flex items-center space-x-3">
+                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                  <Users className="h-6 w-6 text-blue-600" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-900">
+                    {selectedUser.display_name || selectedUser.email}
+                  </h3>
+                  <Badge className={getRoleBadgeColor(selectedUser.role || 'user')}>
+                    {selectedUser.role || 'user'}
+                  </Badge>
+                </div>
+              </div>
+              
+              <div className="space-y-3">
+                <div>
+                  <Label className="text-sm font-medium text-gray-700">Email</Label>
+                  <p className="text-sm text-gray-900">{selectedUser.email}</p>
+                </div>
+                
+                {selectedUser.display_name && (
+                  <div>
+                    <Label className="text-sm font-medium text-gray-700">Display Name</Label>
+                    <p className="text-sm text-gray-900">{selectedUser.display_name}</p>
+                  </div>
+                )}
+                
+                {selectedUser.phone && (
+                  <div>
+                    <Label className="text-sm font-medium text-gray-700">Phone</Label>
+                    <p className="text-sm text-gray-900">{selectedUser.phone}</p>
+                  </div>
+                )}
+                
+                <div>
+                  <Label className="text-sm font-medium text-gray-700">Joined</Label>
+                  <p className="text-sm text-gray-900">{formatDate(selectedUser.created_at)}</p>
+                </div>
+                
+                {selectedUser.last_login_at && (
+                  <div>
+                    <Label className="text-sm font-medium text-gray-700">Last Login</Label>
+                    <p className="text-sm text-gray-900">{formatDate(selectedUser.last_login_at)}</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit User Role Dialog */}
+      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Edit User Role</DialogTitle>
+            <DialogDescription>
+              Change the role for {selectedUser?.display_name || selectedUser?.email}
+            </DialogDescription>
+          </DialogHeader>
+          {selectedUser && (
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="role">User Role</Label>
+                <Select value={editingRole} onValueChange={(value: "admin" | "moderator" | "user") => setEditingRole(value)}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select role" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="user">User</SelectItem>
+                    <SelectItem value="moderator">Moderator</SelectItem>
+                    <SelectItem value="admin">Admin</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div className="flex space-x-3">
+                <Button onClick={handleSaveRole} className="flex-1">
+                  <Save className="h-4 w-4 mr-2" />
+                  Save Changes
+                </Button>
+                <Button 
+                  variant="outline" 
+                  onClick={() => setIsEditDialogOpen(false)}
+                  className="flex-1"
+                >
+                  <X className="h-4 w-4 mr-2" />
+                  Cancel
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

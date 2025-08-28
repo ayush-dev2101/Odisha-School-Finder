@@ -62,6 +62,14 @@ const AdminSchools = () => {
     facilities: [],
     achievements: [],
     admission_process: "",
+    fee_structure: {
+      admission_fee: "",
+      tuition_fee: "",
+      transport_fee: "",
+      other_fees: "",
+      payment_schedule: "",
+      scholarship_info: ""
+    }
   });
 
   useEffect(() => {
@@ -234,6 +242,14 @@ const AdminSchools = () => {
       facilities: [],
       achievements: [],
       admission_process: "",
+      fee_structure: {
+        admission_fee: "",
+        tuition_fee: "",
+        transport_fee: "",
+        other_fees: "",
+        payment_schedule: "",
+        scholarship_info: ""
+      }
     });
   };
 
@@ -405,6 +421,161 @@ const AdminSchools = () => {
                       onChange={(e) => setFormData({ ...formData, principal: e.target.value })}
                       placeholder="Enter principal's name"
                     />
+                  </div>
+
+                  {/* Contact Details Section */}
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-semibold text-gray-900 border-b pb-2">Contact Details</h3>
+                    
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="contact_email">Contact Email</Label>
+                        <Input
+                          id="contact_email"
+                          type="email"
+                          value={formData.contact_email}
+                          onChange={(e) => setFormData({ ...formData, contact_email: e.target.value })}
+                          placeholder="school@example.com"
+                        />
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <Label htmlFor="contact_phone">Contact Phone</Label>
+                        <Input
+                          id="contact_phone"
+                          value={formData.contact_phone}
+                          onChange={(e) => setFormData({ ...formData, contact_phone: e.target.value })}
+                          placeholder="+91 1234567890"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="website">Website</Label>
+                      <Input
+                        id="website"
+                        value={formData.website}
+                        onChange={(e) => setFormData({ ...formData, website: e.target.value })}
+                        placeholder="https://www.schoolname.com"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="address">Complete Address</Label>
+                      <Textarea
+                        id="address"
+                        value={formData.address}
+                        onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                        placeholder="Enter complete school address"
+                        rows={3}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Fees Structure Section */}
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-semibold text-gray-900 border-b pb-2">Fees Structure</h3>
+                    
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="admission_fee">Admission Fee</Label>
+                        <Input
+                          id="admission_fee"
+                          value={formData.fee_structure?.admission_fee || ""}
+                          onChange={(e) => setFormData({ 
+                            ...formData, 
+                            fee_structure: { 
+                              ...formData.fee_structure, 
+                              admission_fee: e.target.value 
+                            } 
+                          })}
+                          placeholder="₹10,000"
+                        />
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <Label htmlFor="tuition_fee">Tuition Fee (Monthly)</Label>
+                        <Input
+                          id="tuition_fee"
+                          value={formData.fee_structure?.tuition_fee || ""}
+                          onChange={(e) => setFormData({ 
+                            ...formData, 
+                            fee_structure: { 
+                              ...formData.fee_structure, 
+                              tuition_fee: e.target.value 
+                            } 
+                          })}
+                          placeholder="₹5,000"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="transport_fee">Transport Fee</Label>
+                        <Input
+                          id="transport_fee"
+                          value={formData.fee_structure?.transport_fee || ""}
+                          onChange={(e) => setFormData({ 
+                            ...formData, 
+                            fee_structure: { 
+                              ...formData.fee_structure, 
+                              transport_fee: e.target.value 
+                            } 
+                          })}
+                          placeholder="₹2,000"
+                        />
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <Label htmlFor="other_fees">Other Fees</Label>
+                        <Input
+                          id="other_fees"
+                          value={formData.fee_structure?.other_fees || ""}
+                          onChange={(e) => setFormData({ 
+                            ...formData, 
+                            fee_structure: { 
+                              ...formData.fee_structure, 
+                              other_fees: e.target.value 
+                            } 
+                          })}
+                          placeholder="Library, Lab, etc."
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="payment_schedule">Payment Schedule</Label>
+                      <Input
+                        id="payment_schedule"
+                        value={formData.fee_structure?.payment_schedule || ""}
+                        onChange={(e) => setFormData({ 
+                          ...formData, 
+                          fee_structure: { 
+                            ...formData.fee_structure, 
+                            payment_schedule: e.target.value 
+                          } 
+                        })}
+                        placeholder="Monthly/Quarterly/Annually"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="scholarship_info">Scholarship Information</Label>
+                      <Textarea
+                        id="scholarship_info"
+                        value={formData.fee_structure?.scholarship_info || ""}
+                        onChange={(e) => setFormData({ 
+                          ...formData, 
+                          fee_structure: { 
+                            ...formData.fee_structure, 
+                            scholarship_info: e.target.value 
+                          } 
+                        })}
+                        placeholder="Details about available scholarships and eligibility criteria"
+                        rows={3}
+                      />
+                    </div>
                   </div>
 
                   <div className="flex space-x-3">

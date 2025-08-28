@@ -209,13 +209,12 @@ const Auth = () => {
 
                   {/* 🔹 Forgot Password */}
                   <p className="text-xs text-center mt-2">
-                    <button 
-                      type="button"
-                      onClick={handleForgotPassword}
+                    <Link 
+                      to="/reset-password"
                       className="text-primary hover:underline"
                     >
                       Forgot your password?
-                    </button>
+                    </Link>
                   </p>
                 </form>
               </TabsContent>

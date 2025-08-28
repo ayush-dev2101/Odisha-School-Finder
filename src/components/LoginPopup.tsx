@@ -66,35 +66,10 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose }) => {
     }
   };
 
-  const handleForgotPassword = async () => {
-    if (!email) {
-      toast({
-        title: "Enter your email",
-        description: "Please provide an email to reset your password.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setIsLoading(true);
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: "http://localhost:5173/reset-password",
-    });
-
-    if (error) {
-      toast({
-        title: "Reset Failed",
-        description: error.message,
-        variant: "destructive",
-      });
-    } else {
-      toast({
-        title: "Password Reset Email Sent",
-        description: "Check your inbox to reset your password.",
-      });
-    }
-
-    setIsLoading(false);
+  const handleForgotPassword = () => {
+    onClose();
+    // Navigate to reset password page
+    window.location.href = '/reset-password';
   };
 
   if (!isOpen) return null;
