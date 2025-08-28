@@ -179,7 +179,7 @@ const ResetPassword = () => {
             </h2>
             <p className="text-muted-foreground">
               {step === 'request' 
-                ? 'We'll send you a secure link to reset your password'
+                ? 'We\'ll send you a secure link to reset your password'
                 : 'Choose a strong password for your account'
               }
             </p>
